@@ -1,0 +1,16 @@
+<%- include("partials/header.ejs") %>
+<section class="create-full-width page-spacing">
+  <div class="create-post-card">
+    <h2>Create Blog</h2>
+    <form action="/posts" method="POST">
+      <div class="form-group">
+        <input type="text" name="title" placeholder="Blog Title..." required>
+      </div>
+      <div class="form-group">
+        <textarea name="content" placeholder="Write your blog content here..." rows="6" required></textarea>
+      </div>
+      <button type="submit" class="btn primary">Publish Article</button>
+    </form>
+  </div>
+</section>
+<%- include("partials/footer.ejs") %>

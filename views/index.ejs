@@ -1,0 +1,56 @@
+<%- include("partials/header.ejs") %>
+
+<div class="hero-section">
+  <h1>Welcome to <span class="brand-highlight">E-Blogs</span></h1>
+  <p>Discover insightful articles or publish your own thoughts in seconds.</p>
+</div>
+
+<!-- Full Width Create Blog Card -->
+<section class="create-full-width">
+  <div class="create-post-card">
+    <h2>Create Blog</h2>
+    <form action="/posts" method="POST">
+      <div class="form-group">
+        <input type="text" name="title" placeholder="Blog Title..." required>
+      </div>
+      <div class="form-group">
+        <textarea name="content" placeholder="Write your blog content here..." rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn primary">Publish Article</button>
+    </form>
+  </div>
+</section>
+
+<!-- My Blogs Grid Section -->
+<section class="posts-section">
+  <div class="section-header">
+    <h2>My Blogs</h2>
+    <span class="badge-pill"><%= posts.length %> <%= posts.length === 1 ? 'Article' : 'Articles' %></span>
+  </div>
+
+  <% if (posts.length === 0) { %>
+    <p style="color: var(--text-secondary);">No blogs published yet.</p>
+  <% } else { %>
+    <div class="blogs-grid-3col">
+      <% posts.forEach(post => { %>
+        <article class="post-card">
+          <div>
+            <div class="post-header-row">
+              <h3><%= post.title %></h3>
+              <span class="post-date-top"><%= post.date %></span>
+            </div>
+            <p class="post-content"><%= post.content %></p>
+          </div>
+          <div class="post-actions">
+            <a href="/posts/<%= post.id %>/edit" class="btn edit">Edit</a>
+            <form action="/posts/<%= post.id %>?_method=DELETE" method="POST" style="display:inline;">
+              <button type="submit" class="btn delete">Delete</button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include("partials/footer.ejs") %>
