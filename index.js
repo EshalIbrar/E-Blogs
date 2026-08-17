@@ -58,3 +58,6 @@ app.delete("/posts/:id", (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server on http://localhost:${port}`));
+
+// Add this line at the bottom:
+module.exports = app;
