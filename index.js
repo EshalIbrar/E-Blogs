@@ -1,7 +1,11 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
+import express from "express";
+import bodyParser from "body-parser";
+import methodOverride from "method-override";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,7 +19,7 @@ let posts = [
   },
 ];
 
-// Correct path resolution for Vercel
+// Views and Static Config
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -23,13 +27,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-// Pages
+// Routes
 app.get("/", (req, res) => res.render("index.ejs", { posts }));
 app.get("/create", (req, res) => res.render("create.ejs"));
 app.get("/blogs", (req, res) => res.render("blogs.ejs", { posts }));
 app.get("/about", (req, res) => res.render("about.ejs"));
 
-// Post Operations
 app.post("/posts", (req, res) => {
   const newPost = {
     id: Date.now().toString(),
@@ -61,8 +64,6 @@ app.delete("/posts/:id", (req, res) => {
   res.redirect("/blogs");
 });
 
-// Start local server (for localhost testing)
 app.listen(port, () => console.log(`Server on http://localhost:${port}`));
 
-// Export app for Vercel serverless environment
-module.exports = app;
+export default app;
