@@ -1,3 +1,5 @@
+const path = require("path");
+
 import express from "express";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
@@ -61,3 +63,7 @@ app.listen(port, () => console.log(`Server on http://localhost:${port}`));
 
 // Add this line at the bottom:
 module.exports = app;
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
