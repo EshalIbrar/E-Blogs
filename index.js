@@ -1,11 +1,10 @@
 const path = require("path");
-
-import express from "express";
-import bodyParser from "body-parser";
-import methodOverride from "method-override";
+const express = require("express");
+const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 let posts = [
   {
@@ -16,10 +15,13 @@ let posts = [
   },
 ];
 
-app.use(express.static("public"));
+// Correct path resolution for Vercel
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.set("view engine", "ejs");
 
 // Pages
 app.get("/", (req, res) => res.render("index.ejs", { posts }));
@@ -59,11 +61,8 @@ app.delete("/posts/:id", (req, res) => {
   res.redirect("/blogs");
 });
 
+// Start local server (for localhost testing)
 app.listen(port, () => console.log(`Server on http://localhost:${port}`));
 
-// Add this line at the bottom:
+// Export app for Vercel serverless environment
 module.exports = app;
-
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
